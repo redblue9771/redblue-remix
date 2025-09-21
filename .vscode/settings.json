@@ -1,0 +1,19 @@
+{
+  // 让插件在字符串里也给出提示
+  "editor.quickSuggestions": { "strings": "on" },
+
+  // 把常用文件类型映射成 HTML，这样插件就能扫描 class 属性
+  "tailwindCSS.includeLanguages": {
+    "vue": "html",
+    "vue-html": "html",
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact",
+    "typescriptreact": "html"
+  },
+  "tailwindCSS.classFunctions": ["tw", "clsx", "tw\\.[a-z-]+"],
+  // 如果项目用了 .tsx，确保 VSCode 先把它识别为 typescriptreact
+  "files.associations": {
+    "*.tsx": "typescriptreact",
+    "*.css": "tailwindcss"
+  }
+}
