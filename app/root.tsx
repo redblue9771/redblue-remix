@@ -35,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="relative min-h-screen">
+      <body className="min-h-screen">
         <NavigateGeneral />
         <HeaderGeneral />
         {children}

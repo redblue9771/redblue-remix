@@ -4,6 +4,8 @@ import type { Route } from "./+types/articles.$slug";
 import "highlight.js/styles/github-dark.min.css";
 import { useEffect } from "react";
 import "katex/dist/katex.min.css";
+import { SITE_NAME } from "~/constants";
+import { genSiteTitle } from "~/lib/utils";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const slug = params.slug;
@@ -15,24 +17,27 @@ export async function loader({ params }: Route.LoaderArgs) {
 
   return { article };
 }
-// export function meta({}: Route.MetaArgs) {
-//   return [{ tagName: "link", rel: "stylesheet", href: highlighCSS }];
-// }
+
+export function meta({ loaderData }: Route.MetaArgs) {
+  return [{ title: genSiteTitle(loaderData?.article?.title ?? "") }];
+}
 
 export default function ArticlePage() {
   const { article } = useLoaderData<{ article: IArticle }>();
   useEffect(() => {}, []);
   return (
-    <main className="container mx-auto py-8 px-4 max-w-5xl">
+    <main className="container mx-auto max-w-7xl flex flex-wrap gap-3 p-4">
       <article
-        className="article-wrap "
+        className="article-wrap w-full lg:flex-1 lg:w-auto"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
-      <aside
-        dangerouslySetInnerHTML={{
-          __html: article.toc,
-        }}
-      ></aside>
+      <aside className="article-toc-wrap w-full lg:sticky lg:top-20 lg:w-3xs lg:self-start">
+        <nav
+          dangerouslySetInnerHTML={{
+            __html: article.toc,
+          }}
+        />
+      </aside>
     </main>
   );
 }

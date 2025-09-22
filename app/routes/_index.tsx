@@ -1,19 +1,26 @@
+import { genSiteTitle } from "~/lib/utils";
 import type { Route } from "./+types/_index";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
-}
-
-export function loader({ context }: Route.LoaderArgs) {
-  return { message: "Hello from Vercel" };
+import { AuroraText } from "~/components/ui/aurora-text";
+import TextType from "~/components/TextType";
+export function meta({ loaderData }: Route.MetaArgs) {
+  return [{ title: genSiteTitle("其实你知的我是那面") }];
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <>
+      <h1 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-7xl">
+        Hi! <AuroraText>I'm 赤琦.</AuroraText>
+      </h1>
+      <TextType
+        text={["凡所有相，皆是虚妄", "New Youth, New Vision."]}
+        typingSpeed={75}
+        pauseDuration={1500}
+        showCursor={true}
+        cursorCharacter="|"
+        className="text-4xl text-black"
+        textColors={["#ff0000", "#00ff00", "#0000ff"]}
+      />
       {/* 轮播图部分 - 使用语义化标签 */}
       <section className="showcase relative">
         <div className="overflow-hidden">

@@ -21,6 +21,7 @@ export default function ArticlesPage() {
             date={article.date}
             title={article.title}
             description={article.summary}
+            to={`/articles/${article.slug}`}
           />
         ))}
       </Geometric.Container>

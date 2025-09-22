@@ -12,6 +12,7 @@ import rehypeHighlightLines from "rehype-highlight-code-lines";
 import { toString } from "mdast-util-to-string";
 import { remove } from "unist-util-remove";
 import remarkStringify from "remark-stringify";
+import { generateTocHtmlFromMarkdownAST } from "~/lib/utils";
 const markdownModules = import.meta.glob("/app/assets/contents/articles/*.md", {
   import: "default",
   query: "?raw",
@@ -25,21 +26,12 @@ export interface IArticle {
   content: string;
   draft?: boolean;
   summary: string;
+  toc: string;
 }
 
 const mdast = unified().use(remarkParse);
 /* 1. 只留 heading，其余全删 */
-function retainHeadings() {
-  return (tree) => {
-    remove(tree, (node) => node.type === "heading");
-    console.log({ tree });
-  };
-}
-const mdToToc = unified()
-  .use(remarkParse)
-  .use(retainHeadings)
-  .use(remarkRehype)
-  .use(rehypeStringify);
+const mdToToc = unified().use(remarkParse);
 const markdownProcessor = unified()
   .use(remarkParse)
   .use(remarkRehype)
@@ -69,8 +61,9 @@ export async function getArticleList(query?: IArticleQuery) {
       const { data, content } = grayMatter(raw);
       const { value } = await markdownProcessor.process(content);
       const text = toString(mdast.parse(content)).replace(/\s+/g, " ").trim();
-      const toc = await mdToToc.process(content);
-      // console.log({ text, toc: toc });
+      const toc = generateTocHtmlFromMarkdownAST(mdToToc.parse(content));
+
+      console.dir(toc);
       return {
         ...data,
         date:
@@ -81,6 +74,7 @@ export async function getArticleList(query?: IArticleQuery) {
           .replace("/app/assets/contents/articles/", "")
           .replace(".md", ""),
         content: value,
+        toc: toc,
         summary: data.summary
           ? data.summary.slice(0, 100) +
             (data.summary.length > 100 ? "..." : "")
