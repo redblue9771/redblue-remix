@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@react-router/fs-routes": "^7.9.1",
-    "@react-router/node": "^7.9.1",
+    "@react-router/node": "^7.9.4",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.3.0",
     "@react-three/rapier": "^2.1.0",
